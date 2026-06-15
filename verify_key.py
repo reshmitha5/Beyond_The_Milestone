@@ -1,7 +1,7 @@
 import google.generativeai as genai
 
 # Your Key
-KEY = "AIzaSyDn5aG-5WOX-RiDGYWwinsF9gIWF6QQ7c8" 
+KEY = "API KEY" 
 genai.configure(api_key=KEY)
 model = genai.GenerativeModel('models/gemini-2.5-flash')
 print("--- DIAGNOSING YOUR KEY ---")
