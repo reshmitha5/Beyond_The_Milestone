@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Beyond The Milestone</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Create Account</h2>
+        <p class="subtitle">Join our community today.</p>
+
+        <!-- Show Flash Messages (Errors or Success) -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- The Registration Form -->
+        <form action="/register" method="POST">
+            
+            <label>Full Name</label>
+            <input type="text" name="full_name" required placeholder="John Doe">
+
+            <div class="row">
+                <div class="col">
+                    <label>Age</label>
+                    <input type="number" name="age" required min="10" max="100">
+                </div>
+                <div class="col">
+                    <label>Phone (10 digits)</label>
+                    <input type="tel" name="phone" pattern="[0-9]{10}" required placeholder="9876543210">
+                </div>
+            </div>
+
+            <label>Email</label>
+            <input type="email" name="email" required placeholder="student@example.com">
+
+            <label>Education Level</label>
+            <select name="class_level" required>
+                <option value="" disabled selected>Select your Class</option>
+                <option value="Class 6th">Class 6th</option>
+                <option value="Class 7th">Class 7th</option>
+                <option value="Class 8th">Class 8th</option>
+                <option value="Class 9th">Class 9th</option>
+                <option value="Class 10th">Class 10th</option>
+                <option value="Inter 1st Year">Inter 1st Year</option>
+                <option value="Inter 2nd Year">Inter 2nd Year</option>
+                <option value="Undergraduate">Undergraduate</option>
+                <option value="Postgraduate">Postgraduate</option>
+            </select>
+
+            <label>Password</label>
+            <input type="password" name="password" required minlength="8" placeholder="Min 8 characters">
+
+            <label>Confirm Password</label>
+            <input type="password" name="confirm_password" required placeholder="Retype password">
+
+            <button type="submit" class="btn-start btn-form">Register</button>
+        </form>
+
+        <p class="footer-link">Already have an account? <a href="#">Login here</a></p>
+    </div>
+
+</body>
+</html>

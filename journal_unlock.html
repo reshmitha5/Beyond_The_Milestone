@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Unlock Journal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="form-container" style="margin: 100px auto;">
+        <h2>Journal Locked</h2>
+        <p>Enter your 4-digit PIN to read your entries.</p>
+        
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}<p style="color: red;">{{ messages[0] }}</p>{% endif %}
+        {% endwith %}
+
+        <form action="/unlock-journal" method="POST">
+            <input type="password" name="pin" maxlength="4" required placeholder="PIN" style="font-size: 2rem; text-align: center;">
+            <button type="submit" class="btn-start">Unlock</button>
+        </form>
+    </div>
+</body>
+</html>

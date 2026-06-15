@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Safe Space - Journal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-wrapper">
+        
+        <!-- MASTER SIDEBAR -->
+        <nav class="sidebar">
+            <div class="logo"><h2>BTM</h2></div>
+                       <ul class="nav-links">
+                <li><a href="{{ url_for('dashboard') }}"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="{{ url_for('ai_mentor') }}"><i class="fas fa-robot"></i> AI Mentor</a></li>
+                <li><a href="{{ url_for('mood_tracker') }}"><i class="fas fa-smile"></i> Mood Tracker</a></li>
+                <li class="active"><a href="{{ url_for('journal') }}"><i class="fas fa-book"></i> Journal</a></li>
+                <li><a href="{{ url_for('suggestions') }}"><i class="fas fa-lightbulb"></i> Suggestions</a></li>
+                <li><a href="{{ url_for('helpline') }}"><i class="fas fa-phone"></i> Helpline</a></li>
+                <li class="logout"><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <header class="dashboard-header">
+                <h1>My Safe Space 📓</h1>
+            </header>
+            
+            <!-- 1. WRITE NEW ENTRY (Always Visible) -->
+            <div class="card">
+                <h3>Write something today...</h3>
+                <form action="/journal" method="POST">
+                    <input type="text" name="title" placeholder="Title of your entry" required style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ddd;">
+                    <textarea name="content" rows="5" placeholder="Dear Diary..." required style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ddd;"></textarea>
+                    <button type="submit" class="btn-start" style="margin-top: 10px;">Save Entry</button>
+                </form>
+            </div>
+
+            <hr style="margin: 30px 0;">
+
+            <!-- 2. PREVIOUS ENTRIES (Conditional Logic) -->
+            <div class="history">
+                
+                <!-- CHECK: Is the journal LOCKED? -->
+                {% if not is_unlocked %}
+                    
+                    <div style="text-align: center; padding: 20px; background: #fff; border-radius: 10px;">
+                        <h3>🔒 Previous Entries are Locked</h3>
+                        <p style="margin-bottom: 15px;">Enter your 4-digit PIN to view history.</p>
+                        
+                        {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                                <div class="alert error" style="color: red; margin-bottom: 10px;">{{ messages[0] }}</div>
+                            {% endif %}
+                        {% endwith %}
+
+                        <!-- PIN Form -->
+                        <form action="{{ url_for('unlock_journal') }}" method="POST" style="display: flex; justify-content: center; gap: 10px;">
+                            <input type="password" name="pin" maxlength="4" pattern="\d{4}" required placeholder="PIN" style="width: 100px; text-align: center;">
+                            <button type="submit" class="btn-start" style="padding: 10px 20px;">Unlock</button>
+                        </form>
+                        
+                        <br>
+                        <small><a href="{{ url_for('set_pin') }}">Forgot/Reset PIN?</a></small>
+                    </div>
+
+                <!-- ELSE: It is UNLOCKED -->
+                {% else %}
+                    
+                    <h3>Your Previous Entries</h3>
+                    
+                    {% for entry in entries %}
+                    <div class="card" style="margin-bottom: 15px; text-align: left; border-left: 5px solid #6c5ce7;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <h4>{{ entry.title }}</h4>
+                            <small style="color: grey;">{{ entry.date_posted.strftime('%B %d, %Y') }}</small>
+                        </div>
+                        <p style="margin-top: 10px; white-space: pre-wrap;">{{ entry.content }}</p>
+                    </div>
+                    {% endfor %}
+
+                    {% if not entries %}
+                        <p style="text-align: center; color: grey;">No entries found yet. Write your first one above!</p>
+                    {% endif %}
+
+                {% endif %}
+            </div>
+
+        </main>
+    </div>
+</body>
+</html>

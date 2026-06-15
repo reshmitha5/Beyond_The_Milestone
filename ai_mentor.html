@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Mentor - Beyond The Milestone</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Pulse Animation for Microphone */
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 82, 82, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 82, 82, 0); }
+        }
+        .mic-active {
+            background-color: #ff5252 !important;
+            color: white !important;
+            animation: pulse-red 1.5s infinite;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-wrapper">
+        
+        <!-- MASTER SIDEBAR -->
+        <nav class="sidebar">
+            <div class="logo"><h2>BTM</h2></div>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('dashboard') }}"><i class="fas fa-home"></i> Home</a></li>
+                <li class="active"><a href="{{ url_for('ai_mentor') }}"><i class="fas fa-robot"></i> AI Mentor</a></li>
+                <li><a href="{{ url_for('mood_tracker') }}"><i class="fas fa-smile"></i> Mood Tracker</a></li>
+                <li><a href="{{ url_for('journal') }}"><i class="fas fa-book"></i> Journal</a></li>
+                <li><a href="{{ url_for('suggestions') }}"><i class="fas fa-lightbulb"></i> Suggestions</a></li>
+                <li><a href="{{ url_for('helpline') }}"><i class="fas fa-phone"></i> Helpline</a></li>
+                <li class="logout"><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </nav>
+
+        <!-- MAIN CHAT AREA -->
+        <main class="main-content chat-page">
+            <div class="chat-header">
+                <h2><i class="fas fa-robot"></i> AI Mentor</h2>
+                <p>Hi {{ user.full_name.split()[0] }}, how are you feeling today?</p>
+            </div>
+
+            <div class="chat-box" id="chat-box">
+                <div class="message ai-message">
+                    <div class="bubble">Hello! I'm here to listen. You can type or use the microphone to talk to me. 🎙️</div>
+                </div>
+            </div>
+
+            <div class="chat-input-area">
+                <button id="mic-btn" class="icon-btn" title="Speak"><i class="fas fa-microphone"></i></button>
+                <input type="text" id="user-input" placeholder="Type a message or use voice..." autocomplete="off">
+                <button id="send-btn" class="icon-btn send-btn"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </main>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        const chatBox = document.getElementById('chat-box');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+        const micBtn = document.getElementById('mic-btn');
+
+        function appendMessage(text, sender) {
+            const msgDiv = document.createElement('div');
+            msgDiv.classList.add('message', sender + '-message');
+            msgDiv.innerHTML = `<div class="bubble">${text}</div>`;
+            chatBox.appendChild(msgDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const text = userInput.value;
+            if (text.trim() === "") return;
+
+            appendMessage(text, 'user');
+            userInput.value = '';
+
+            // Show Typing...
+            const typingDiv = document.createElement('div');
+            typingDiv.classList.add('message', 'ai-message');
+            typingDiv.id = "typing-indicator";
+            typingDiv.innerHTML = `<div class="bubble"><i class="fas fa-ellipsis-h"></i> Typing...</div>`;
+            chatBox.appendChild(typingDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            try {
+                const response = await fetch('/chat-api', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: text })
+                });
+                const data = await response.json();
+
+                const indicator = document.getElementById('typing-indicator');
+                if (indicator) indicator.remove();
+
+                if (data.response) appendMessage(data.response, 'ai');
+                
+                if (data.alert) {
+                    alert("⚠️ SAFETY ALERT: Please read the helpline information immediately.");
+                    window.location.href = "{{ url_for('helpline') }}";
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                const indicator = document.getElementById('typing-indicator');
+                if (indicator) indicator.remove();
+                appendMessage("I'm having trouble connecting. Please try again.", 'ai');
+            }
+        }
+
+        sendBtn.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        // --- MICROPHONE LOGIC (Indian English) ---
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+        if (SpeechRecognition) {
+            const recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.lang = 'en-IN'; // Indian English
+
+            micBtn.addEventListener('click', () => {
+                try {
+                    recognition.start();
+                } catch (err) {
+                    console.error("Mic Error:", err);
+                    alert("Could not start microphone. Check your Windows/Mac privacy settings.");
+                }
+            });
+
+            recognition.onstart = () => {
+                micBtn.classList.add("mic-active"); // Turn Red
+                userInput.placeholder = "Listening... Speak now!";
+            };
+
+            recognition.onend = () => {
+                micBtn.classList.remove("mic-active"); // Turn Normal
+                userInput.placeholder = "Type a message or use voice...";
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                userInput.value = transcript;
+                sendMessage(); // Auto Send
+            };
+
+            recognition.onerror = (event) => {
+                console.error("Speech Error:", event.error);
+                micBtn.classList.remove("mic-active");
+                if (event.error === 'not-allowed' || event.error === 'audio-capture') {
+                    alert("⚠️ Microphone Error: No mic found or access denied. Please check your computer settings.");
+                }
+            };
+        } else {
+            micBtn.style.display = "none";
+        }
+    </script>
+</body>
+</html>

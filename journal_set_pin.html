@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Set Journal PIN</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="form-container" style="margin: 100px auto;">
+        <h2>Secure Your Space</h2>
+        <p>Set a 4-digit PIN to keep your journal private.</p>
+        <form action="/set-pin" method="POST">
+            <input type="password" name="pin" maxlength="4" pattern="\d{4}" required placeholder="e.g. 1234" style="font-size: 2rem; text-align: center;">
+            <button type="submit" class="btn-start">Set PIN & Open Journal</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Wellness Suggestions</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-wrapper">
+        
+        <!-- MASTER SIDEBAR -->
+        <nav class="sidebar">
+            <div class="logo"><h2>BTM</h2></div>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('dashboard') }}"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="{{ url_for('ai_mentor') }}"><i class="fas fa-robot"></i> AI Mentor</a></li>
+                <li><a href="{{ url_for('mood_tracker') }}"><i class="fas fa-smile"></i> Mood Tracker</a></li>
+                <li><a href="{{ url_for('journal') }}"><i class="fas fa-book"></i> Journal</a></li>
+                <li class="active"><a href="{{ url_for('suggestions') }}"><i class="fas fa-lightbulb"></i> Suggestions</a></li>
+                <li><a href="{{ url_for('helpline') }}"><i class="fas fa-phone"></i> Helpline</a></li>
+                <li class="logout"><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <header class="dashboard-header">
+                <h1>Personalized For You ✨</h1>
+                <p>Based on your recent mood: <strong>{{ category }}</strong></p>
+            </header>
+
+            <div class="stats-container">
+                
+                {% if category == 'Happy' %}
+                    <!-- HAPPY SUGGESTIONS -->
+                    <div class="card">
+                        <h3><i class="fas fa-heart" style="color: #ff7675;"></i> Gratitude</h3>
+                        <p>Write down 3 things you are thankful for today to keep the positivity flowing.</p>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fas fa-share-alt" style="color: #74b9ff;"></i> Share Joy</h3>
+                        <p>Call a friend or send a nice message to someone you care about.</p>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fas fa-running" style="color: #55efc4;"></i> Active</h3>
+                        <p>Go for a run or dance to your favorite song!</p>
+                    </div>
+
+                {% elif category == 'Low' %}
+                    <!-- LOW/SAD SUGGESTIONS -->
+                    <div class="card">
+                        <h3><i class="fas fa-wind" style="color: #0984e3;"></i> Breathe</h3>
+                        <p>Try the 4-7-8 breathing technique: Inhale for 4s, Hold for 7s, Exhale for 8s.</p>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fas fa-walking" style="color: #00b894;"></i> Nature Walk</h3>
+                        <p>A 10-minute walk outside can naturally boost your serotonin.</p>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fas fa-music" style="color: #6c5ce7;"></i> Calming Music</h3>
+                        <p>Listen to lo-fi beats or nature sounds to soothe your mind.</p>
+                    </div>
+                    <div class="card" style="border: 2px solid #ff7675;">
+                        <h3><i class="fas fa-phone"></i> Talk to Someone</h3>
+                        <p>If you feel overwhelmed, please check the <a href="{{ url_for('helpline') }}">Helpline Page</a>.</p>
+                    </div>
+
+                {% else %}
+                    <!-- NEUTRAL SUGGESTIONS -->
+                    <div class="card">
+                        <h3><i class="fas fa-book-open"></i> Read</h3>
+                        <p>Read 5 pages of a book you enjoy.</p>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fas fa-broom"></i> Declutter</h3>
+                        <p>Clean your study desk for 5 minutes. A clear space = clear mind.</p>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fas fa-tint"></i> Hydrate</h3>
+                        <p>Drink a full glass of water right now.</p>
+                    </div>
+                {% endif %}
+
+            </div>
+        </main>
+    </div>
+</body>
+</html>

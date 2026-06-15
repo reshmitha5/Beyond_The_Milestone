@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mood Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <div class="dashboard-wrapper">
+        
+        <!-- SIDEBAR (Fixed) -->
+              <!-- SIDEBAR -->
+        <nav class="sidebar">
+                        <div class="logo"><h2>BTM</h2></div>
+
+                        <ul class="nav-links">
+                <li><a href="{{ url_for('dashboard') }}"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="{{ url_for('ai_mentor') }}"><i class="fas fa-robot"></i> AI Mentor</a></li>
+                <li class="active"><a href="{{ url_for('mood_tracker') }}"><i class="fas fa-smile"></i> Mood Tracker</a></li>
+                <li><a href="{{ url_for('journal') }}"><i class="fas fa-book"></i> Journal</a></li>
+                <li><a href="{{ url_for('suggestions') }}"><i class="fas fa-lightbulb"></i> Suggestions</a></li>
+                <li><a href="{{ url_for('helpline') }}"><i class="fas fa-phone"></i> Helpline</a></li>
+                <li class="logout"><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </nav>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <header class="dashboard-header">
+                <h1>Mood Tracker 📊</h1>
+            </header>
+
+            <div class="mood-entry-section">
+                <h2>How are you feeling?</h2>
+                <form action="/mood-tracker" method="POST" class="mood-form">
+                    <div class="mood-options">
+                        <input type="radio" name="mood_score" value="5" id="mood5" required>
+                        <label for="mood5" onclick="setLabel('Happy')">😄<br>Happy</label>
+
+                        <input type="radio" name="mood_score" value="4" id="mood4">
+                        <label for="mood4" onclick="setLabel('Calm')">😌<br>Calm</label>
+
+                        <input type="radio" name="mood_score" value="3" id="mood3">
+                        <label for="mood3" onclick="setLabel('Neutral')">😐<br>Neutral</label>
+
+                        <input type="radio" name="mood_score" value="2" id="mood2">
+                        <label for="mood2" onclick="setLabel('Anxious')">😰<br>Anxious</label>
+
+                        <input type="radio" name="mood_score" value="1" id="mood1">
+                        <label for="mood1" onclick="setLabel('Sad')">😔<br>Sad</label>
+                    </div>
+                    <input type="hidden" name="mood_label" id="mood_label_input">
+                    <div class="note-area">
+                        <label>Why? (Optional)</label>
+                        <textarea name="note" rows="3" placeholder="I had a long day..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-start">Log Mood</button>
+                </form>
+            </div>
+
+            <div class="chart-container" style="margin-top: 40px; background: white; padding: 20px; border-radius: 15px;">
+                <canvas id="moodChart"></canvas>
+            </div>
+
+            <div class="history-list">
+                <h3>Recent Logs</h3>
+                {% for mood in moods %}
+                    <div class="card" style="margin-bottom: 10px; display: flex; justify-content: space-between;">
+                        <div>
+                            <strong>{{ mood.mood_label }}</strong> 
+                            <span style="color: grey; font-size: 0.8rem;">{{ mood.date_posted.strftime('%Y-%m-%d %H:%M') }}</span>
+                            <p>{{ mood.note }}</p>
+                        </div>
+                        <div style="font-size: 1.5rem;">
+                            {% if mood.mood_score == 5 %}😄{% elif mood.mood_score == 4 %}😌{% elif mood.mood_score == 3 %}😐{% elif mood.mood_score == 2 %}😰{% else %}😔{% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function setLabel(label) {
+            document.getElementById('mood_label_input').value = label;
+        }
+
+        const ctx = document.getElementById('moodChart').getContext('2d');
+        const moodLabels = {{ mood_dates | tojson }};
+        const moodData = {{ mood_scores | tojson }};
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: moodLabels,
+                datasets: [{
+                    label: 'Mood History',
+                    data: moodData,
+                    borderColor: '#6c5ce7',
+                    tension: 0.3,
+                    fill: true,
+                    backgroundColor: 'rgba(108, 92, 231, 0.1)'
+                }]
+            },
+            options: {
+                scales: { y: { min: 0, max: 6, ticks: { stepSize: 1 } } }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Helpline (India) - You Are Not Alone</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-wrapper">
+        
+        <!-- SIDEBAR -->
+        <nav class="sidebar">
+            <div class="logo"><h2>BTM</h2></div>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('dashboard') }}"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="{{ url_for('ai_mentor') }}"><i class="fas fa-robot"></i> AI Mentor</a></li>
+                <li><a href="{{ url_for('mood_tracker') }}"><i class="fas fa-smile"></i> Mood Tracker</a></li>
+                <li><a href="{{ url_for('journal') }}"><i class="fas fa-book"></i> Journal</a></li>
+                <li><a href="{{ url_for('suggestions') }}"><i class="fas fa-lightbulb"></i> Suggestions</a></li>
+                <li class="active"><a href="{{ url_for('helpline') }}"><i class="fas fa-phone"></i> Helpline</a></li>
+                <li class="logout"><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <header class="dashboard-header">
+                <h1>Helpline (India) 🇮🇳</h1>
+                <p>Support is available 24/7. You are valuable.</p>
+            </header>
+
+            <!-- EMERGENCY BUTTON -->
+            <div style="text-align: center; margin-bottom: 40px;">
+                <a href="tel:112" class="btn-start" style="background-color: #d63031; font-size: 1.5rem; padding: 20px 40px;">
+                    <i class="fas fa-exclamation-circle"></i> Emergency: 112
+                </a>
+            </div>
+
+            <!-- INDIAN HELPLINE CARDS -->
+            <div class="stats-container">
+                
+                <div class="card">
+                    <h3>iCall (TISS)</h3>
+                    <p class="stat-value" style="font-size: 1.2rem;">91529-87821</p>
+                    <p>Mon-Sat, 8:00 AM - 10:00 PM</p>
+                    <a href="tel:9152987821" style="color: #6c5ce7; font-weight: bold;">Call Now</a>
+                </div>
+
+                <div class="card">
+                    <h3>Vandrevala Foundation</h3>
+                    <p class="stat-value" style="font-size: 1.2rem;">1860-2662-345</p>
+                    <p>24x7 Free Counseling</p>
+                    <a href="tel:18602662345" style="color: #6c5ce7; font-weight: bold;">Call Now</a>
+                </div>
+
+                <div class="card">
+                    <h3>Sneha (Chennai)</h3>
+                    <p class="stat-value" style="font-size: 1.2rem;">044-24640050</p>
+                    <p>Suicide Prevention (24x7)</p>
+                    <a href="tel:04424640050" style="color: #6c5ce7; font-weight: bold;">Call Now</a>
+                </div>
+
+                <div class="card">
+                    <h3>AASRA</h3>
+                    <p class="stat-value" style="font-size: 1.2rem;">9820466726</p>
+                    <p>24x7 Helpline</p>
+                    <a href="tel:9820466726" style="color: #6c5ce7; font-weight: bold;">Call Now</a>
+                </div>
+
+            </div>
+        </main>
+    </div>
+</body>
+</html>

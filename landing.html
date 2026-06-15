@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beyond The Milestone</title>
+    
+    <!-- Link to our CSS file for styling -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <!-- Import a nice font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- This is the main container for the content -->
+    <div class="landing-container">
+        
+        <!-- The Header Section -->
+        <header>
+            <h1>Beyond The Milestone</h1>
+            <p class="subtitle">Your safe space for mental wellness and academic balance.</p>
+        </header>
+
+        <!-- The Call to Action Section -->
+        <div class="action-area">
+            <p>You are not alone in this journey.</p>
+            
+            <!-- This button currently goes nowhere (#), we will fix this later -->
+<a href="{{ url_for('login') }}" class="btn-start">Get Started</a>        </div>
+
+    </div>
+
+</body>
+</html>

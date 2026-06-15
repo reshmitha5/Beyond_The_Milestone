@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Beyond The Milestone</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="dashboard-wrapper">
+        
+        <!-- SIDEBAR NAVIGATION -->
+                <!-- SIDEBAR -->
+        <nav class="sidebar">
+            <div class="logo"><h2>BTM</h2></div>
+                        <ul class="nav-links">
+                <li class="active"><a href="{{ url_for('dashboard') }}"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="{{ url_for('ai_mentor') }}"><i class="fas fa-robot"></i> AI Mentor</a></li>
+                <li><a href="{{ url_for('mood_tracker') }}"><i class="fas fa-smile"></i> Mood Tracker</a></li>
+                <li><a href="{{ url_for('journal') }}"><i class="fas fa-book"></i> Journal</a></li>
+                <li><a href="{{ url_for('suggestions') }}"><i class="fas fa-lightbulb"></i> Suggestions</a></li>
+                <li><a href="{{ url_for('helpline') }}"><i class="fas fa-phone"></i> Helpline</a></li>
+                <li class="logout"><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </nav>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="main-content">
+            
+            <!-- Header Section -->
+            <header class="dashboard-header">
+                <div>
+                    <!-- Shows just the First Name -->
+                    <h1>Welcome, {{ user.full_name.split()[0] }}! 👋</h1>
+                    <p class="date">{{ date }}</p>
+                </div>
+                <div class="user-profile">
+                    <div class="avatar">{{ user.full_name[0] }}</div>
+                </div>
+            </header>
+
+            <!-- Stats & Quote Section -->
+            <div class="stats-container">
+                <!-- Streak Card -->
+                <div class="card streak-card">
+                    <h3>Current Streak</h3>
+                    <div class="stat-value">🔥 1 Day</div>
+                    <p>Keep it up!</p>
+                </div>
+
+                <!-- Points Card -->
+                <div class="card points-card">
+                    <h3>My Level</h3>
+                    <div class="stat-value">🌱 Seedling</div>
+                    <p>0 Points</p>
+                </div>
+
+                <!-- Quote Card -->
+                <div class="card quote-card">
+                    <h3>Quote of the Day</h3>
+                    <blockquote class="daily-quote">"{{ quote }}"</blockquote>
+                </div>
+            </div>
+
+            <!-- Mood Check-In Section -->
+            <div class="mood-check-section">
+                <h2>How are you feeling right now?</h2>
+                <div class="emoji-container">
+                    <button class="mood-btn" onclick="window.location.href='{{ url_for('mood_tracker') }}'">😄<br>Happy</button>
+                    <button class="mood-btn" onclick="window.location.href='{{ url_for('mood_tracker') }}'">😌<br>Calm</button>
+                    <button class="mood-btn" onclick="window.location.href='{{ url_for('mood_tracker') }}'">😐<br>Okay</button>
+                    <button class="mood-btn" onclick="window.location.href='{{ url_for('mood_tracker') }}'">😰<br>Anxious</button>
+                    <button class="mood-btn" onclick="window.location.href='{{ url_for('mood_tracker') }}'">😔<br>Sad</button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+</body>
+</html>
