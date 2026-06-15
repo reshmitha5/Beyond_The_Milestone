@@ -14,7 +14,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # =========================================================================
 # 1. PASTE YOUR GOOGLE API KEY HERE (Inside the quotes!)
 # =========================================================================
-GOOGLE_API_KEY = API Key
+GOOGLE_API_KEY = "API Key"
 
 # 2. CONFIGURE AI
 genai.configure(api_key=GOOGLE_API_KEY)
