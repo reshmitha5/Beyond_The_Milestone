@@ -13,7 +13,7 @@
         {% with messages = get_flashed_messages() %}
             {% if messages %}<p style="color: red;">{{ messages[0] }}</p>{% endif %}
         {% endwith %}
-
+ 
         <form action="/unlock-journal" method="POST">
             <input type="password" name="pin" maxlength="4" required placeholder="PIN" style="font-size: 2rem; text-align: center;">
             <button type="submit" class="btn-start">Unlock</button>
