@@ -5,7 +5,7 @@ A digital psychological support system and context-aware AI web app tailored for
 ## Project Description
 Beyond The Milestone is a student-centric platform designed to provide accessible psychological support. It features real-time safety nets, context-aware AI interactions, and gamified mood tracking to help students navigate academic pressure.
 
-## Technologies Used 
+## Technologies Used
 * **Backend**: Python, Flask
 * **Frontend**: HTML, CSS, JavaScript
 * **Database**: SQLite
