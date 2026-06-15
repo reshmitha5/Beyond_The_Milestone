@@ -11,7 +11,7 @@ app.config['SECRET_KEY'] = 'my_secret_key_123'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# =========================================================================
+# ========================================================================= 
 # 1. PASTE YOUR GOOGLE API KEY HERE (Inside the quotes!)
 # =========================================================================
 GOOGLE_API_KEY = "API Key"
